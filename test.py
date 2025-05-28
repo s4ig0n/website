@@ -1,6 +1,6 @@
 import networkx as nx
-import numpy as np
 import matplotlib.pyplot as plt
+from pulp import LpProblem, LpVariable, LpMinimize, lpSum, LpBinary, PULP_CBC_CMD
 
 def generate_edges(rows, cols):
     edges = []
@@ -19,9 +19,21 @@ def create_graph(vertices, edges):
     G.add_edges_from(edges)
     return G
 
-def get_dominating_set(G):
-    dom_set = nx.algorithms.approximation.min_weighted_dominating_set(G)
-    return dom_set
+def get_exact_dominating_set(G):
+    prob = LpProblem("MinimumDominatingSet", LpMinimize)
+    x = {v: LpVariable(f"x_{v}", cat=LpBinary) for v in G.nodes()}
+
+    # Objective: Minimize number of nodes in dominating set
+    prob += lpSum(x[v] for v in G.nodes())
+
+    # Constraints: each node must be dominated by itself or a neighbor
+    for v in G.nodes():
+        prob += lpSum(x[u] for u in [v] + list(G.neighbors(v))) >= 1
+
+    prob.solve(PULP_CBC_CMD(msg=0))
+
+    # Return dominating set
+    return {v for v in G.nodes() if x[v].varValue == 1}
 
 # Input
 rows = int(input("Enter number of rows: "))
@@ -32,20 +44,20 @@ edges = generate_edges(rows, cols)
 
 # Graph setup
 G = create_graph(vertices, edges)
-dominating_set = get_dominating_set(G)
+dominating_set = get_exact_dominating_set(G)
 domination_number = len(dominating_set)
 
 # Output
-print("Graph vertices:", G.nodes())
-print("Graph edges:", G.edges())
+print("Graph vertices:", list(G.nodes()))
+print("Graph edges:", list(G.edges()))
 print("Dominating Set:", dominating_set)
 print("Domination Number:", domination_number)
 
-# Grid layout fix
+# Layout
 pos = {node: ((node - 1) % cols, -((node - 1) // cols)) for node in G.nodes()}
 
 # Draw
 nx.draw(G, pos, with_labels=True, node_color='lightblue', node_size=600)
 nx.draw_networkx_nodes(G, pos, nodelist=dominating_set, node_color='orange', edgecolors='black', node_size=600)
-plt.title("Grid Graph with Dominating Set Highlighted")
+plt.title("Grid Graph with Minimum Dominating Set")
 plt.show()
