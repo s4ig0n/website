@@ -76,6 +76,7 @@
     }
 
     function updateSpotlight() {
+      const radius=200;
       spotlightX = lerp(spotlightX, targetX, 0.15);
       spotlightY = lerp(spotlightY, targetY, 0.15);
       content.style.backgroundPosition = `${spotlightX}px ${spotlightY}px`;
@@ -84,7 +85,7 @@
 
     function moveSpotlight(x, y) {
       targetX = x;
-      targetY = y + 80; 
+      targetY = y; 
     }
 
 
