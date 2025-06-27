@@ -42,16 +42,34 @@
     }
 
     .spotlight {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        pointer-events: none;
-        z-index: 3;
-        background: radial-gradient(circle at 50% 50%, transparent 100px, rgba(0, 0, 0, 1) 170px);
-        mix-blend-mode: multiply;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 3;
+      background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.0) 0px, rgba(0, 0, 0, 0.96) 180px);
+      mix-blend-mode: normal; 
     }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: black;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .spotlight {
+    transition: background 0.05s ease-out;
+  }
+
+
+
   </style>
 </head>
 <body>
@@ -74,6 +92,7 @@
 
   // For mouse movement (desktop)
   document.addEventListener('mousemove', (e) => {
+    const touch = e.touches[0];
     updateSpotlight(e.clientX, e.clientY);
   });
 
