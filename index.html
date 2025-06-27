@@ -42,34 +42,16 @@
     }
 
     .spotlight {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 3;
-      background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.0) 0px, rgba(0, 0, 0, 0.96) 180px);
-      mix-blend-mode: normal; 
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        z-index: 3;
+        background: radial-gradient(circle at 50% 50%, transparent 100px, rgba(0, 0, 0, 1) 170px);
+        mix-blend-mode: multiply;
     }
-
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: black;
-      z-index: 2;
-      pointer-events: none;
-    }
-
-    .spotlight {
-    transition: background 0.05s ease-out;
-  }
-
-
-
   </style>
 </head>
 <body>
@@ -86,21 +68,19 @@
 
   function updateSpotlight(x, y) {
     spotlight.style.background = `
-      radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.12) 0%, rgba(0,0,0,0.96) 150px)
+      radial-gradient(circle at ${x}px ${y}px,
+      rgba(255, 255, 255, 0.2) 0px,
+      rgba(0, 0, 0, 0.6) 200px,
+      rgba(0, 0, 0, 0.9) 300px,
+      rgba(0, 0, 0, 1) 400px)
+
     `;
   }
 
   // For mouse movement (desktop)
   document.addEventListener('mousemove', (e) => {
-    const touch = e.touches[0];
     updateSpotlight(e.clientX, e.clientY);
   });
-
-  // For touch movement (mobile)
-  document.addEventListener('touchmove', (e) => {
-    const touch = e.touches[0];
-    updateSpotlight(touch.clientX, touch.clientY);
-  }, { passive: true });
 </script>
 
 </body>
