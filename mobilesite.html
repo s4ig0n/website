@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gouri's Site</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: black;
+      overflow: auto;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .hidden-layer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: black;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .spotlight {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 2;
+      background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0) 0px, rgba(0,0,0,0.96) 150px);
+      mix-blend-mode: normal;
+      transition: background 0.05s ease-out;
+    }
+
+    .content {
+      color: white;
+      padding: 100px 20px;
+      font-size: 1.5rem;
+      line-height: 2.2rem;
+      z-index: 0;
+      position: relative;
+    }
+
+    h1, h2 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      margin-bottom: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <h1>Hello!</h1>
+    <p>I'm Gouri. Welcome to my minimalist site.</p>
+    
+    <h2>About Me</h2>
+    <p>CS major. Math enjoyer. Cinephile. Honors student. ✨</p>
+
+    <h2>Projects</h2>
+    <p>Paper coming soon! Working on math & graph theory things.</p>
+
+    <h2>Contact</h2>
+    <p>Email: neerajk2@uwm.edu</p>
+  </div>
+
+  <div class="hidden-layer"></div>
+  <div class="spotlight" id="spotlight"></div>
+
+  <script>
+    const spotlight = document.getElementById('spotlight');
+
+    function updateSpotlight(x, y) {
+      spotlight.style.background = `
+        radial-gradient(circle at ${x}px ${y}px, rgba(0,0,0,0) 100px, rgba(0,0,0,0.96) 200px)
+      `;
+    }
+
+    document.addEventListener('mousemove', (e) => {
+      updateSpotlight(e.clientX, e.clientY);
+    });
+
+    document.addEventListener('touchmove', (e) => {
+      const touch = e.touches[0];
+      updateSpotlight(touch.clientX, touch.clientY);
+    }, { passive: true });
+
+    document.addEventListener('touchstart', (e) => {
+      const touch = e.touches[0];
+      updateSpotlight(touch.clientX, touch.clientY);
+    }, { passive: true });
+  </script>
+</body>
+</html>
