@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Spotlight Portfolio</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body, html {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+        background-color: black;
+        color: white;
+        position: relative;
+        z-index: 1;
+    }
+
+
+    .content {
+      position: relative;
+      z-index: 2;
+      padding: 100px;
+      pointer-events: none;
+    }
+
+    .section {
+      margin-bottom: 100px;
+      font-size: 2rem;
+      opacity: 0.9;
+    }
+
+    .spotlight {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        z-index: 3;
+        background: radial-gradient(circle at 50% 50%, transparent 100px, rgba(0, 0, 0, 1) 170px);
+        mix-blend-mode: multiply;
+    }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <div class="section"><h1>Hello!</h1><p>I'm Gouri.</p><p>Welcome to my website!</p></div>
+    <div class="section"><h2>Paper coming soon!</h2></div>
+    <div class="section"><h2>About Me</h2><p>I'm a junior pursuing my degree in Computer Science (with Honors)</p><p>BIG cinephile and apprently, an enjoyer of math! ^_^</p></div>
+    <div class="section"><h2>Contact</h2><p>Email: neerajk2@uwm.edu</p></div>
+  </div>
+  <div class="spotlight" id="spotlight"></div>
+
+  <script>
+    const spotlight = document.getElementById('spotlight');
+
+    document.addEventListener('mousemove', (e) => {
+      const x = e.clientX;
+      const y = e.clientY;
+      spotlight.style.background = `
+        radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.12) 0%, rgba(0,0,0,0.96) 150px)
+      `;
+    });
+  </script>
+</body>
+</html>
