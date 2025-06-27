@@ -6,97 +6,111 @@
   <title>Gouri's Site</title>
   <style>
     html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      background: black;
-      overflow: auto;
-      font-family: 'Segoe UI', sans-serif;
-    }
+  margin: 0; padding: 0;
+  height: 100%;
+  background: black;
+  color: white;
+  font-family: 'Segoe UI', sans-serif;
+  overflow-y: auto;
+}
 
-    .hidden-layer {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: black;
-      z-index: 1;
-      pointer-events: none;
-    }
+body {
+  position: relative;
+}
 
-    .spotlight {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 2;
-      background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0) 0px, rgba(0,0,0,0.96) 150px);
-      mix-blend-mode: normal;
-      transition: background 0.05s ease-out;
-    }
+.content {
+  padding: 100px 20px;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  position: relative;
+  z-index: 1;
 
-    .content {
-      color: white;
-      padding: 100px 20px;
-      font-size: 1.5rem;
-      line-height: 2.2rem;
-      z-index: 0;
-      position: relative;
-    }
+  color: transparent;
+  -webkit-text-fill-color: transparent; /* for Safari */
+  -webkit-background-clip: text;
+  background-clip: text;
 
-    h1, h2 {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-    }
+  /* Soft torch spotlight */
+  background-image: radial-gradient(
+    circle at center, 
+    rgba(255, 255, 255, 1) 0%, 
+    rgba(255, 255, 255, 0.4) 40%, 
+    rgba(255, 255, 255, 0.1) 70%, 
+    rgba(255, 255, 255, 0) 90%
+  );
+  
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
 
-    p {
-      margin-bottom: 1.5rem;
-    }
+  transition: background-position 0.05s ease;
+}
   </style>
 </head>
 <body>
-  <div class="content">
-    <h1>Hello!</h1>
-    <p>I'm Gouri. Welcome to my minimalist site.</p>
-    
-    <h2>About Me</h2>
-    <p>CS major. Math enjoyer. Cinephile. Honors student. ✨</p>
+  <div class="content" id="content">
+  <h1>Hello!</h1>
+  <p>I'm Gouri.</p>
+ <p>Welcome to my website!</p>
 
-    <h2>Projects</h2>
-    <p>Paper coming soon! Working on math & graph theory things.</p>
+   <h2>Projects</h2>
+  <p>Paper coming soon!✨</p>
+  
+  <h2>About Me</h2>
+  <p>I'm a junior pursuing my degree in Computer Science (with Honors)</p>
+  <p>BIG cinephile and apprently, an enjoyer of math! ^_^</p>
 
-    <h2>Contact</h2>
-    <p>Email: neerajk2@uwm.edu</p>
-  </div>
+
+  <h2>Contact</h2>
+  <p>Email:neerajk2@uwm.edu</p>
+</div>
+
 
   <div class="hidden-layer"></div>
   <div class="spotlight" id="spotlight"></div>
 
   <script>
-    const spotlight = document.getElementById('spotlight');
+    const content = document.getElementById('content');
 
-    function updateSpotlight(x, y) {
-      spotlight.style.background = `
-        radial-gradient(circle at ${x}px ${y}px, rgba(0,0,0,0) 100px, rgba(0,0,0,0.96) 200px)
-      `;
-    }
+let spotlightX = window.innerWidth / 2;
+let spotlightY = window.innerHeight / 2;
 
-    document.addEventListener('mousemove', (e) => {
-      updateSpotlight(e.clientX, e.clientY);
-    });
+let targetX = spotlightX;
+let targetY = spotlightY;
 
-    document.addEventListener('touchmove', (e) => {
-      const touch = e.touches[0];
-      updateSpotlight(touch.clientX, touch.clientY);
-    }, { passive: true });
+function lerp(start, end, t) {
+  return start + (end - start) * t;
+}
 
-    document.addEventListener('touchstart', (e) => {
-      const touch = e.touches[0];
-      updateSpotlight(touch.clientX, touch.clientY);
-    }, { passive: true });
+function updateSpotlight() {
+  spotlightX = lerp(spotlightX, targetX, 0.15);
+  spotlightY = lerp(spotlightY, targetY, 0.15);
+  content.style.backgroundPosition = `${spotlightX}px ${spotlightY}px`;
+  requestAnimationFrame(updateSpotlight);
+}
+
+function moveSpotlight(x, y) {
+  targetX = x;
+  targetY = y;
+}
+
+// Start the animation loop
+updateSpotlight();
+
+document.addEventListener('touchmove', e => {
+  const touch = e.touches[0];
+  moveSpotlight(touch.clientX, touch.clientY);
+}, { passive: true });
+
+document.addEventListener('touchstart', e => {
+  const touch = e.touches[0];
+  moveSpotlight(touch.clientX, touch.clientY);
+}, { passive: true });
+
+// Optional desktop mouse support:
+document.addEventListener('mousemove', e => {
+  moveSpotlight(e.clientX, e.clientY);
+});
+
   </script>
 </body>
 </html>
